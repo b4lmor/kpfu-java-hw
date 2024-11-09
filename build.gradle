@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group = 'ru.kpfu.khismatova'
+version = '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = '21'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+test {
+    useJUnitPlatform()
+}
