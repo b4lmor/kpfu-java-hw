@@ -4,22 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Polynomial {
-    private final ArrayList<Double> coeffs = new ArrayList<>();
 
-    public ArrayList<Double> getCoeffs() {
-        return (ArrayList<Double>) coeffs.clone();
+    private static final double EPSILON = 1e-4;
+
+    protected List<Double> coeffs;
+
+    public List<Double> getCoeffs() {
+        return new ArrayList<>(coeffs);
     }
 
     public Polynomial() {
+        this.coeffs = new ArrayList<>();
         coeffs.add(0.0);
     }
 
-    public Polynomial(ArrayList<Double> coeffs) {
+    public Polynomial(List<Double> coeffs) {
+        this.coeffs = new ArrayList<>();
         this.coeffs.addAll(coeffs);
         correctCoeffs();
     }
 
     public Polynomial(Double... coeffs) {
+        this.coeffs = new ArrayList<>();
         this.coeffs.addAll(List.of(coeffs));
         correctCoeffs();
     }
@@ -119,14 +125,25 @@ public class Polynomial {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj != null && obj.getClass() == this.getClass()) {
-            return obj.hashCode() == hashCode();
+        if (obj == null) {
+            return false;
+        } else if (obj instanceof Polynomial polynomial) {
+            if (polynomial.coeffs.size() != this.coeffs.size()) {
+                return false;
+            } else {
+                for (int i = 0; i < this.coeffs.size(); i++) {
+                    if (Math.abs(polynomial.coeffs.get(i) - this.coeffs.get(i)) >= EPSILON) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return 31 * coeffs.hashCode();
+        return coeffs.hashCode();
     }
 }

@@ -1,26 +1,30 @@
 package ru.kpfu.khismatova.lab5;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import ru.kpfu.khismatova.lab3.interpolation.Point;
 import ru.kpfu.khismatova.lab5.math.Lagrange;
 import ru.kpfu.khismatova.lab5.math.Newton;
 
 import java.util.List;
 
-public class Main {
+public class InterpolationTest {
 
-    static final List<Point> table = List.of(
+    static final List<Point> table1 = List.of(
             new Point(0, -1),
             new Point(1, 2),
             new Point(2, 4)
     );
 
-    public static void main(String[] args) {
+    @Test
+    void lagrangeAndNewtonAreEquals() {
         var lagrange = new Lagrange();
-        lagrange.interpolate(table);
-        System.out.println(lagrange);
+        lagrange.interpolate(table1);
 
         var newton = new Newton();
-        newton.interpolate(table);
-        System.out.println(newton);
+        newton.interpolate(table1);
+
+        Assertions.assertEquals(lagrange, newton);
     }
+
 }

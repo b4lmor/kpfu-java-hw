@@ -21,7 +21,7 @@ public class HeapSort {
             heapify(array, n, i);
         }
 
-        // Извлечение элементов из кучи
+        // извлечение элементов из кучи
         for (int i = n - 1; i > 0; i--) {
             // Перемещение текущего корня в конец
             int temp = array[0];
@@ -35,7 +35,7 @@ public class HeapSort {
 
     // Метод для преобразования подмассива в кучу
     private static void heapify(int[] array, int n, int i) {
-        int largest = i; // Инициализируем наибольший элемент как корень
+        int largest = i; // инициализируем наибольший элемент как корень
         int left = 2 * i + 1; // Левый дочерний элемент
         int right = 2 * i + 2; // Правый дочерний элемент
 
