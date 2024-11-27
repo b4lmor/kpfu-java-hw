@@ -75,10 +75,10 @@ public class Polynomial {
         return new Polynomial(l);
     }
 
-    public double calc(double x){
+    public double calc(double x) {
         double p = 1;
         double s = coeffs.getFirst();
-        for (int i = 1; i < coeffs.size(); i++){
+        for (int i = 1; i < coeffs.size(); i++) {
             p *= x;
             s += coeffs.get(i) * p;
         }
@@ -99,12 +99,12 @@ public class Polynomial {
         return new Polynomial(c);
     }
 
-    public Polynomial minus(Polynomial other){
+    public Polynomial minus(Polynomial other) {
         return plus(other.times(-1.));
     }
 
-    public Polynomial div(double k){
-        return times(1./k);
+    public Polynomial div(double k) {
+        return times(1. / k);
     }
 
     public Polynomial plus(Polynomial other) {
@@ -128,13 +128,12 @@ public class Polynomial {
         if (obj == null) {
             return false;
         } else if (obj instanceof Polynomial polynomial) {
-            if (polynomial.coeffs.size() != this.coeffs.size()) {
-                return false;
-            } else {
-                for (int i = 0; i < this.coeffs.size(); i++) {
-                    if (Math.abs(polynomial.coeffs.get(i) - this.coeffs.get(i)) >= EPSILON) {
-                        return false;
-                    }
+            int maxSize = Math.max(this.coeffs.size(), polynomial.coeffs.size());
+            for (int i = 0; i < maxSize; i++) {
+                double self = i >= this.coeffs.size() ? 0 : this.coeffs.get(i);
+                double other = i >= polynomial.coeffs.size() ? 0 : polynomial.coeffs.get(i);
+                if (Math.abs(self - other) >= EPSILON) {
+                    return false;
                 }
             }
             return true;
