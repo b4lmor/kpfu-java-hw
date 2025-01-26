@@ -9,11 +9,8 @@ import java.util.concurrent.Executors;
 public class Mandelbrot {
 
     private static final float SIZE = 2f;
-
     private final int width;
-
     private final int height;
-
     private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public Mandelbrot(int width, int height) {

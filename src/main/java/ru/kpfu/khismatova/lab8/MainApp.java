@@ -17,15 +17,10 @@ import java.util.UUID;
 import java.util.function.Function;
 
 public class MainApp extends JFrame {
-
     private final ControlPanel controlPanel;
-
     private final ImagePanel imagePanel;
-
     private final Stack<ImageState> poseStack = new Stack<>();
-
     private final Function<ImageState, BufferedImage> imageFunc;
-
     public MainApp(Function<ImageState, BufferedImage> imageFunc) {
 
         this.imageFunc = imageFunc;
@@ -42,9 +37,7 @@ public class MainApp extends JFrame {
         add(imagePanel, BorderLayout.CENTER);
 
         setupKeyBindings();
-
         update();
-
         setVisible(true);
     }
 
@@ -55,7 +48,6 @@ public class MainApp extends JFrame {
                             .drawMandelbrotSet(state.power(), state.maxIter(), state.brightness());
                     try {
                         return mandelbrot.getSubimage(state.offsetX(), state.offsetY(), state.width(), state.height());
-
                     } catch (Exception e) {
                         return mandelbrot;
                     }
@@ -64,9 +56,7 @@ public class MainApp extends JFrame {
     }
 
     private void update() {
-
         ImagePanel.ImageOffsetState offsetState = this.imagePanel.getOffsetState();
-
         ImageState state = new ImageState(
                 this.controlPanel.powerSlider.getValue(),
                 this.controlPanel.maxIterationSlider.getValue(),
@@ -80,9 +70,7 @@ public class MainApp extends JFrame {
         if (!poseStack.isEmpty() && state.equals(poseStack.peek())) {
             return;
         }
-
         this.poseStack.push(state);
-
         setImage(imageFunc.apply(this.poseStack.peek()));
     }
 
@@ -104,7 +92,6 @@ public class MainApp extends JFrame {
             }
         }
 
-
         setImage(imageFunc.apply(state));
     }
 
@@ -114,9 +101,7 @@ public class MainApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Enter pressed! Updating ...");
-
                 update();
-
                 System.out.println("Enter pressed! Updating ... Done!");
             }
         });
@@ -126,9 +111,7 @@ public class MainApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Ctrl+Z pressed! Undoing ...");
-
                 undo();
-
                 System.out.println("Ctrl+Z pressed! Undoing ... Done!");
             }
         });
@@ -138,9 +121,7 @@ public class MainApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Ctrl+S pressed! Saving ...");
-
                 ImageState.save(UUID.randomUUID() + ".mndlbrt", poseStack.peek());
-
                 System.out.println("Ctrl+S pressed! Saving ... Done!");
             }
         });
@@ -151,13 +132,15 @@ public class MainApp extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Ctrl+L pressed! Loading ...");
 
-                ImageState imageState = ImageState.load(controlPanel.loadField.getText());
+                ImageState state = ImageState.load(controlPanel.loadField.getText());
 
-                if (imageState != null) {
-                    poseStack.push(imageState);
+                if (state != null) {
+                    poseStack.push(state);
+                    controlPanel.powerSlider.setValue(state.power());
+                    controlPanel.maxIterationSlider.setValue(state.maxIter());
+                    controlPanel.brightnessSlider.setValue(Math.round(state.brightness()));
                     setImage(imageFunc.apply(poseStack.peek()));
                 }
-
                 System.out.println("Ctrl+L pressed! Loading ... Done!");
             }
         });
@@ -170,17 +153,11 @@ public class MainApp extends JFrame {
 
     public record ImageState(
             int power,
-
             int maxIter,
-
             float brightness,
-
             int offsetX,
-
             int offsetY,
-
             int width,
-
             int height
 
     ) implements Serializable {
@@ -209,20 +186,13 @@ public class MainApp extends JFrame {
     public static class ImagePanel extends JPanel {
 
         public BufferedImage image;
-
         private final Rectangle selection = new Rectangle();
-
         private float scaleX;
-
         private float scaleY;
-
         private final Stack<ImageOffsetState> poseStack = new Stack<>();
-
         public ImagePanel() {
             setPreferredSize(new Dimension(550, 600));
-
             MouseAdapter mouseAdapter = getMouseAdapter();
-
             addMouseListener(mouseAdapter);
             addMouseMotionListener(mouseAdapter);
 
@@ -272,7 +242,6 @@ public class MainApp extends JFrame {
                 public void mousePressed(MouseEvent e) {
                     startPoint = e.getPoint();
                     selection.setBounds(startPoint.x, startPoint.y, 0, 0);
-
                     repaint();
                 }
 
@@ -294,7 +263,6 @@ public class MainApp extends JFrame {
                     System.out.println("Selected area: " + selection);
 
                     int newSize = (int) Math.min(selection.width / scaleX, selection.height / scaleY);
-
                     ImageOffsetState state = poseStack.peek();
 
                     int offsetX = state.x;
@@ -306,9 +274,7 @@ public class MainApp extends JFrame {
                     size = newSize;
 
                     poseStack.push(new ImageOffsetState(offsetX, offsetY, size));
-
                     selection.setBounds(0, 0, 0, 0);
-
                     repaint();
                 }
             };
@@ -317,9 +283,7 @@ public class MainApp extends JFrame {
         public record ImageOffsetState(
 
                 int x,
-
                 int y,
-
                 int size
 
         ) {
@@ -329,11 +293,8 @@ public class MainApp extends JFrame {
     public static class ControlPanel extends JPanel {
 
         public JSlider powerSlider;
-
         public JSlider brightnessSlider;
-
         public JSlider maxIterationSlider;
-
         public JTextField loadField;
 
         public ControlPanel() {

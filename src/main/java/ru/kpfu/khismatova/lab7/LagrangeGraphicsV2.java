@@ -15,9 +15,7 @@ public class LagrangeGraphicsV2 extends JPanel {
 
     private static final int SCALE = 50;
     private static final int AXIS_PADDING = 10;
-
     private final List<Point> points = new ArrayList<>();
-
     private Function<Double, Double> lagrange;
 
     public LagrangeGraphicsV2() {
@@ -85,7 +83,7 @@ public class LagrangeGraphicsV2 extends JPanel {
             return;
         }
 
-        g.setColor(Color.CYAN);
+        g.setColor(Color.BLUE);
 
         for (int i = 0; i < getWidth(); i++) {
 
@@ -116,5 +114,4 @@ public class LagrangeGraphicsV2 extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-
 }
